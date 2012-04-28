@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fullText xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <dbInfo ip="192.168.8.8" user="dev" passwd="dev" dbName="saicunit" dbType="mysql"></dbInfo>
+</fullText>

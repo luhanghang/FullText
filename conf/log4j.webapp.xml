@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE log4j:configuration
+    SYSTEM "log4j.dtd"
+>
+
+<log4j:configuration>
+      <!-- 缺省的log文件，每台机器上只有一个，用于记录其它appender没有记录的信息 -->
+    <appender name="default" class="org.apache.log4j.FileAppender">
+        <param name="File" value="${FullTextHome}/logs/webapp.log"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%t %p %d{MM-dd-hh:mm:ss} %c] -- %m%n"/>
+        </layout>
+    </appender> 
+
+    <!-- 打印到控制台的信息，每台机器只有一个 -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%t %p %d{MM-dd-hh:mm:ss} %c] -- %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="net.sf.hibernate" additivity="false">
+        <level value="warn"/>
+        <appender-ref ref="default"/>
+    </logger>
+
+    <root>
+        <level value="warn"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="default"/>
+    </root>
+
+
+</log4j:configuration>
