@@ -347,6 +347,7 @@ public class Index {
     }
 
     private void update_title(Statement stmt, String seq, String title, String infotype) throws Exception {
+        title = title.replaceAll("'","''").replaceAll("\\\\", "");
         StringBuffer sql = new StringBuffer();
         sql.append("delete from logs.titles where seq='").append(seq).append("' and infotype = '").append(infotype).append("'");
         stmt.execute(sql.toString());
