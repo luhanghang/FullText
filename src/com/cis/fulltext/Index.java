@@ -347,7 +347,7 @@ public class Index {
     }
 
     private void update_title(Statement stmt, String seq, String title, String infotype) throws Exception {
-        title = title.replaceAll("'","''").replaceAll("\\\\", "");
+        title = title.replaceAll("'", "''").replaceAll("\\\\", "");
         StringBuffer sql = new StringBuffer();
         sql.append("delete from logs.titles where seq='").append(seq).append("' and infotype = '").append(infotype).append("'");
         stmt.execute(sql.toString());
@@ -569,6 +569,15 @@ public class Index {
 
     public String getRecords(String condition, int page, int recordsPerPage) throws Exception {
         return getRecords(condition, page, recordsPerPage, null);
+    }
+
+    public int getMatchCount(String condition) throws Exception {
+        prepareSearch();
+        QueryParser parser = new QueryParser(this.keyField, new StandardAnalyzer());
+        Query query = parser.parse(condition);
+        Hits hits = indexSearcher.search(query);
+
+        return hits.length();
     }
 
     public String getRecords(String condition, int page, int recordsPerPage, String sorts) throws Exception {
@@ -973,8 +982,8 @@ public class Index {
 
     private String getRsString(ResultSet rs, String name) throws Exception {
         String value = rs.getString(name);
-        if(value == null) return null;
-        return value.replaceAll("'","''");
+        if (value == null) return null;
+        return value.replaceAll("'", "''");
 //        try {
 //            String value = rs.getString(name);
 //            return new String(value.getBytes("ISO8859-1"),"GBK");

@@ -153,6 +153,15 @@ public class UnionIndex extends Index {
         System.out.println("done");
     }
 
+    public int getMatchCount(String condition) throws Exception {
+        prepareSearch();
+        QueryParser parser = new QueryParser(this.keyField, new StandardAnalyzer());
+        Query query = parser.parse(condition);
+        Hits hits = searcher.search(query);
+
+        return hits.length();
+    }
+
     public String getRecords(String condition, int page, int recordsPerPage) throws Exception {
         condition += " AND " + this.timeField + ":[1990-01-01 TO 2050-12-31]";
         prepareSearch();
