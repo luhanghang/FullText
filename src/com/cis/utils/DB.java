@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 
 public class DB {
     static String[] host = {"192.168.0.80", "localhost"};
-    static String[] pass = {"zzwl0518", "cistyz0328"};
+    static String[] pass = {"zzwl0518", "zzwl0518"};
 
     public static Connection getConnection(int i) throws Exception {
         String url = CommonUtil.getDBConnString("MySql", host[i], "infoseek");

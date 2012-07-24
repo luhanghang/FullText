@@ -38,13 +38,13 @@ public class Category {
     private void init() {
         String sql = "select code, keywords from category";
         try {
-            init_conn("localhost", "infoseek", "root", "cistyz0328");
+            init_conn("localhost", "infoseek", "root", "zzwl0518");
             rs = state.executeQuery(sql);
             rs.beforeFirst();
             while (rs.next()) {
                 category.add(new Record(rs.getString("code"), rs.getString("keywords")));
             }
-            init_conn1("localhost", "contents", "root", "cistyz0328");
+            init_conn1("localhost", "contents", "root", "zzwl0518");
             bi = new Index(source);
         } catch (Exception e) {
             e.printStackTrace();

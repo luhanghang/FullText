@@ -317,7 +317,7 @@ public class Attachment {
         String driver = "com.mysql.jdbc.Driver";
         try {
             Class.forName(driver).newInstance();
-            Connection conn = DriverManager.getConnection(url, "root", "cistyz0328");
+            Connection conn = DriverManager.getConnection(url, "root", "zzwl0518");
             Statement stmt = conn.createStatement();
             stmt.execute(sql.toString());
             stmt.close();
