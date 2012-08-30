@@ -337,10 +337,10 @@ public class Index {
         System.out.println(url);
         //mcc.delete(url);
         StringBuffer sql = new StringBuffer();
-        sql.append("delete from contents.").append(this.name).append(" where seq='").append(seq).append("'");
+        sql.append("delete from contents.").append(this.infType).append(" where seq='").append(seq).append("'");
         stmt.execute(sql.toString());
         sql.delete(0, sql.length());
-        sql.append("insert into contents.").append(this.name).append(" values (null,'").append(seq).append("','").append(content.replaceAll("\\\\", "").replaceAll("'", "''")).append("')");
+        sql.append("insert into contents.").append(this.infType).append(" values (null,'").append(seq).append("','").append(content.replaceAll("\\\\", "").replaceAll("'", "''")).append("')");
 
         System.out.println("content:" + seq);
         stmt.execute(sql.toString());
