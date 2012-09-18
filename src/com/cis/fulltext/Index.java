@@ -142,6 +142,7 @@ public class Index {
     protected void init() {
         config = new Xml(CONFIGFILE);
         this.indexInf = AllIndexsInfo.getInstance().getIndexInfoFromDB(this.name);
+        System.out.println(this.indexInf);
         this.indexPath = this.indexInf.indexPath + this.postfix;
         findKeyField();
         Node item = config.find("//Item[@id='" + this.name + "']");
@@ -1011,9 +1012,9 @@ public class Index {
     }
 
     public static void main(String[] args) throws Exception {
-        Env.homePath = args[0];
-        AllIndexsInfo.getInstance().loadIndexInfoFromDB();
-        System.out.println(Env.homePath);
+        //Env.homePath = args[0];
+        //AllIndexsInfo.getInstance().loadIndexInfoFromDB();
+        //System.out.println(Env.homePath);
         if (args.length == 2) {
             Index idx = new Index(args[1]);
             idx.bulk_create();

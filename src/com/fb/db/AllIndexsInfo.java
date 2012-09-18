@@ -96,7 +96,6 @@ public class AllIndexsInfo {
 	}
 	
 	public UnionIndexInfo getUnionIndexInfoFromDB(String indexName){
-		
 		for(int i=0; i<vUnionIndexInfo.size(); i++){
 			UnionIndexInfo info = (UnionIndexInfo)vUnionIndexInfo.get(i);
 			if(info.indexName.equals(indexName))
@@ -107,9 +106,10 @@ public class AllIndexsInfo {
 	}
 	
 	public IndexInfo getIndexInfoFromDB(String indexName){
-		
-		for(int i=0; i<vIndexInfo.size(); i++){
+        System.out.println("required indexName is:" + indexName);
+        for(int i=0; i<vIndexInfo.size(); i++){
 			IndexInfo info = (IndexInfo)vIndexInfo.get(i);
+            System.out.println("info->" + info.indexName + " loaded");
 			if(info.indexName.equals(indexName))
 				return info;
 		}

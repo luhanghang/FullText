@@ -180,6 +180,7 @@ public final class CommonUtil {
 					.getString("indexStatus"));
 
 			vIndexInfo.add(indexInfo);
+            System.out.println(indexInfo + " added");
 		}
 
 		stmt.close();

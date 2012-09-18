@@ -1,5 +1,7 @@
 package com.fb.db;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+
 import java.util.Vector;
 
 public class IndexInfo {
@@ -55,7 +57,11 @@ public class IndexInfo {
 			strBuf.delete(0,pos+1);
 			pos = strBuf.indexOf("&");
 		}
-	}	
+	}
+
+    public String toString() {
+        return "IndexInfo->" + indexName;
+    }
 	
 	public FieldInfo getFieldInfo(String fieldName){
 		

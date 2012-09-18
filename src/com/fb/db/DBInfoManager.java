@@ -28,6 +28,7 @@ public class DBInfoManager {
 	public void init() throws Exception {
 	        //String confFile = Env.getConfPath() + Env.fileSep +  "dbinfo.xml";
 	        String confFile = (new StringBuffer(Config.getInstance().getPath()).append("WEB-INF/dbinfo.xml")).toString();
+            System.out.println("configFile->" + confFile);
             XmlPackager parser = new XmlPackager();
             parser.parseFile(confFile);
             Document _document = parser.document();
@@ -40,7 +41,8 @@ public class DBInfoManager {
             dbUser = (String) prop.getProperty("user");
             dbPasswd = (String) prop.getProperty("passwd");
             dbName = (String) prop.getProperty("dbName");
-            dbType = (String)prop.getProperty("dbType");      
+            dbType = (String)prop.getProperty("dbType");
+            System.out.println(dbIP + ":" + dbUser + ":" + dbName);
 	       
 	    }
 
@@ -102,4 +104,8 @@ public class DBInfoManager {
 		this.dbType = dbType;
 	}
 
+    public static void main(String[] args) throws Exception {
+        String confFile = (new StringBuffer(Config.getInstance().getPath()).append("WEB-INF/dbinfo.xml")).toString();
+        System.out.println(confFile);
+    }
 }
