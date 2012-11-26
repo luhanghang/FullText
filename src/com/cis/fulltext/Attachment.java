@@ -243,6 +243,7 @@ public class Attachment {
             System.out.println("File:/mnt/attachments" + fuj + " does not exist");
             return "";
         }
+        rmLogError();
         Process proc;
         if (ext.equals("tml") || ext.equals("htm") || ext.equals("txt") || ext.equals("doc") || ext.equals("xls") || ext.equals("zip") || ext.equals("rar")) {
             if (ext.equals("zip")) {
@@ -250,11 +251,7 @@ public class Attachment {
 //                proc.waitFor();
 //                proc = Runtime.getRuntime().exec("/usr/local/bin/unzip /mnt/attachments/" + fuj + " -d /tmp/attachments/" + fuj);
 //                proc.waitFor();
-                try {
-                    Unzip.unzip(fuj);
-                } catch (Exception e) {
-                    logError("unzip", e.getMessage());
-                }
+                Unzip.unzip(fuj, this);
                 String content = getFiles(new File("/tmp/attachments" + fuj));
                 //File file = new File("/tmp/attachments/" + fuj);
                 try {
@@ -308,7 +305,24 @@ public class Attachment {
         return "";
     }
 
-    private void logError(String when, String error) {
+    private void rmLogError() {
+        StringBuffer sql = new StringBuffer();
+        sql.append("delete from logs.attachment_error where seq = ").append(this.seq);
+        String url = "jdbc:mysql://localhost/logs?useUnicode=true&characterEncoding=latin1";
+        String driver = "com.mysql.jdbc.Driver";
+        try {
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, "root", "zzwl0518");
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql.toString());
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void logError(String when, String error) {
         System.out.println("!!!! Error -> When " + when + ", error occured:" + error);
         StringBuffer sql = new StringBuffer();
         sql.append("insert into logs.attachment_error values (null,now(),'").append(this.item).append("','");

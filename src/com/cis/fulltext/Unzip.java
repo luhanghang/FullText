@@ -18,41 +18,61 @@ import java.util.Enumeration;
  * To change this template use File | Settings | File Templates.
  */
 public class Unzip {
-    public static void unzip(String fileName) throws Exception{
+    public static void unzip(String fileName, Attachment attachment) {
         File file = new File("/tmp/attachments/" + fileName);
         //System.out.println("file:" + file.getAbsolutePath() + ":" + file.mkdir());
-        file.mkdir();
+        file.mkdirs();
 
         InputStream inputStream;
         FileOutputStream fileOut;
         int readedBytes;
         byte[] buf = new byte[512];
 
-        ZipFile zf = new ZipFile("/mnt/attachments/" + fileName);
+        ZipFile zf = null;
+        try {
+            zf = new ZipFile("/mnt/attachments/" + fileName);
+        } catch (Exception e) {
+            attachment.logError("unzip", e.getMessage());
+        }
+        if (zf != null) {
+            int i = 0;
+            for (Enumeration entries = zf.getEntries(); entries.hasMoreElements(); ) {
 
-        for (Enumeration entries = zf.getEntries(); entries.hasMoreElements(); ) {
-            ZipEntry entry = (ZipEntry) entries.nextElement();
-            file = new File("/tmp/attachments/" + fileName + "/" + entry.getName());
+                ZipEntry entry = (ZipEntry) entries.nextElement();
+                file = new File("/tmp/attachments/" + fileName + "/" + (i++) + "." + getExt(entry.getName()));
 
-            if (entry.isDirectory()) {
-                file.mkdirs();
-            } else {
-                //File parent = file.getParentFile();
-                //if (!parent.exists()) {
-                //parent.mkdirs();
-                //}
+                if (entry.isDirectory()) {
+                    file.mkdirs();
+                } else {
+                    //File parent = file.getParentFile();
+                    //if (!parent.exists()) {
+                    //parent.mkdirs();
+                    //}
+                    try {
+                        inputStream = zf.getInputStream(entry);
 
-                inputStream = zf.getInputStream(entry);
+                        fileOut = new FileOutputStream(file);
+                        while ((readedBytes = inputStream.read(buf)) > 0) {
+                            fileOut.write(buf, 0, readedBytes);
+                        }
+                        fileOut.close();
 
-                fileOut = new FileOutputStream(file);
-                while ((readedBytes = inputStream.read(buf)) > 0) {
-                    fileOut.write(buf, 0, readedBytes);
+                        inputStream.close();
+                    } catch (Exception e) {
+                        attachment.logError("unzip", e.getMessage());
+                    }
                 }
-                fileOut.close();
+            }
+            try {
+                zf.close();
+            } catch (Exception e) {
 
-                inputStream.close();
             }
         }
-        zf.close();
+    }
+
+    public static String getExt(String fileName) {
+        if (fileName.length() < 5) return "";
+        return fileName.substring(fileName.length() - 3, fileName.length()).toLowerCase();
     }
 }
