@@ -723,7 +723,7 @@ public class Index {
         if (item.equals("union")) return;
         log("To update " + item);
 
-        String sql = "select * from infoseek.infoaction where item='" + item + "' and (flag=0 or (flag = 11 and unix_timestamp(now()) - unix_timestamp(ctime) > 1200))";
+        String sql = "select * from infoseek.infoaction where item='" + item + "' and (flag=0 or (flag = 11 and unix_timestamp(now()) - unix_timestamp(ctime) > 1200)) limit 500";
         Connection conn = DB.getConnection(1);
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
