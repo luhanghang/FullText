@@ -56,8 +56,7 @@ public class Utils {
     }
 
     public static void main(String[] args){
-        for(int i = 0; i < 50 ; i++)
-        System.out.println(Utils.now("yyyyMMddHHmmssS"));
+        System.out.println(numberToHan("dafds 大家好      13910172341 哈哈 138 010  23342!@#$%^&*()"));
     }
 
     /**
@@ -67,7 +66,7 @@ public class Utils {
      * @return Date String
      */
     public static String showDate(Calendar calendar, String format){
-    	DateFormat df = new SimpleDateFormat(format);
+        DateFormat df = new SimpleDateFormat(format);
         df.setTimeZone(DEFAULT_TIMEZONE);
         return df.format(calendar.getTime());
     }
@@ -78,7 +77,7 @@ public class Utils {
      * @return Date String
      */
     public static String showDate(Calendar calendar){
-    	return showDate(calendar, DEFAULT_FORMAT);
+        return showDate(calendar, DEFAULT_FORMAT);
     }
 
     /**
@@ -89,7 +88,7 @@ public class Utils {
      * @return Date String
      */
     public static String showDate(Calendar calendar, String format, TimeZone tZone){
-    	DateFormat df = new SimpleDateFormat(format);
+        DateFormat df = new SimpleDateFormat(format);
         df.setTimeZone(tZone);
         return df.format(calendar.getTime());
     }
@@ -101,6 +100,21 @@ public class Utils {
      * @return Date String
      */
     public static String showDate(Calendar calendar, TimeZone tZone){
-    	return showDate(calendar, DEFAULT_FORMAT, tZone);
+        return showDate(calendar, DEFAULT_FORMAT, tZone);
+    }
+
+    private static String[] NUMBERS = {"零","一","二","三","四","五","六","七","八","九"};
+    public static String numberToHan(String src) {
+        StringBuffer result = new StringBuffer();
+        for(int i = 0; i < src.length(); i++) {
+            String c = src.substring(i,i+1);
+            try {
+                result.append(NUMBERS[Integer.parseInt(c)]);
+            } catch (Exception e) {
+                result.append(c);
+            }
+        }
+        return result.toString();
+        //return src;
     }
 }

@@ -28,49 +28,49 @@ import com.fb.db.UnionIndexInfo;
 
 public final class CommonUtil {
 
-	/*
-	 * ªÒ»° ˝æ›ø‚¡¨Ω”◊÷∑˚¥Æ
-	 */
-	public static String getDBConnString(String dbType, String dbIP,
-			String dbName) throws Exception {
+    /*
+     * Ëé∑ÂèñÊï∞ÊçÆÂ∫ìËøûÊé•Â≠óÁ¨¶‰∏≤
+     */
+    public static String getDBConnString(String dbType, String dbIP,
+                                         String dbName) throws Exception {
 
-		if (dbType.length() == 0 || dbIP.length() == 0 || dbName.length() == 0) {
-			throw new Exception(" ˝æ›ø‚–≈œ¢≤ª’˝»∑£¨”––≈œ¢Œ™ø’!");
-		}
+        if (dbType.length() == 0 || dbIP.length() == 0 || dbName.length() == 0) {
+            throw new Exception("Êï∞ÊçÆÂ∫ì‰ø°ÊÅØ‰∏çÊ≠£Á°ÆÔºåÊúâ‰ø°ÊÅØ‰∏∫Á©∫!");
+        }
 
-		String connString = null;
+        String connString = null;
 
-		if (dbType.compareToIgnoreCase("mysql") == 0) {
-			connString = "jdbc:mysql://" + dbIP + "/" + dbName
-					+ "?useUnicode=true&characterEncoding=gbk";
-		} else if (dbType.compareToIgnoreCase("sql server") == 0) {
-			connString = "jdbc:microsoft:sqlserver://" + dbIP
-					+ ":1433;DatabaseName=" + dbName;
-		} else
-			throw new Exception(" ˝æ›ø‚¿‡–Õ≤ª’˝»∑!");
+        if (dbType.compareToIgnoreCase("mysql") == 0) {
+            connString = "jdbc:mysql://" + dbIP + "/" + dbName
+                    + "?useUnicode=true&characterEncoding=gbk";
+        } else if (dbType.compareToIgnoreCase("sql server") == 0) {
+            connString = "jdbc:microsoft:sqlserver://" + dbIP
+                    + ":1433;DatabaseName=" + dbName;
+        } else
+            throw new Exception("Êï∞ÊçÆÂ∫ìÁ±ªÂûã‰∏çÊ≠£Á°Æ!");
 
-		return connString;
-	}
+        return connString;
+    }
 
-	/*
-	 * ªÒ»° ˝æ›ø‚«˝∂Ø◊÷∑˚¥Æ
-	 */
-	public static String getDbDriverStr(String dbType) throws Exception {
+    /*
+     * Ëé∑ÂèñÊï∞ÊçÆÂ∫ìÈ©±Âä®Â≠óÁ¨¶‰∏≤
+     */
+    public static String getDbDriverStr(String dbType) throws Exception {
 
-		if (dbType.length() == 0)
-			throw new Exception(" ˝æ›ø‚¿‡–ÕŒ™ø’!");
+        if (dbType.length() == 0)
+            throw new Exception("Êï∞ÊçÆÂ∫ìÁ±ªÂûã‰∏∫Á©∫!");
 
-		String driverStr = null;
+        String driverStr = null;
 
-		if (dbType.compareToIgnoreCase("mysql") == 0) {
-			driverStr = "com.mysql.jdbc.Driver";
-		} else if (dbType.compareToIgnoreCase("sql server") == 0) {
-			driverStr = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
-		} else
-			throw new Exception(" ˝æ›ø‚¿‡–Õ≤ª’˝»∑!");
+        if (dbType.compareToIgnoreCase("mysql") == 0) {
+            driverStr = "com.mysql.jdbc.Driver";
+        } else if (dbType.compareToIgnoreCase("sql server") == 0) {
+            driverStr = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
+        } else
+            throw new Exception("Êï∞ÊçÆÂ∫ìÁ±ªÂûã‰∏çÊ≠£Á°Æ!");
 
-		return driverStr;
-	}
+        return driverStr;
+    }
 
 //	public static boolean writeIndexInfo2DB(AddIndexForm form,
 //			String indexPath, String fieldInfo) {
@@ -103,7 +103,7 @@ public final class CommonUtil {
 //			stmt.close();
 //			conn.close();
 //
-//			// ÷ÿ–¬º”‘ÿÀ˘”–µƒÀ˜“˝–≈œ¢
+//			// ÈáçÊñ∞Âä†ËΩΩÊâÄÊúâÁöÑÁ¥¢Âºï‰ø°ÊÅØ
 //			AllIndexsInfo.getInstance().loadIndexInfoFromDB();
 //
 //			return true;
@@ -111,529 +111,529 @@ public final class CommonUtil {
 //			return false;
 //		}
 //	}
-	
-	public static boolean writeIndexInfo2DB(UnionIndexInfo indexInfo) {
 
-		try {
-			DBInfoManager dbManager = DBInfoManager.getInstance();
-			String url = CommonUtil.getDBConnString(dbManager.getDbType(),
-					dbManager.getDbIP(), dbManager.getDbName());
+    public static boolean writeIndexInfo2DB(UnionIndexInfo indexInfo) {
 
-			String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+        try {
+            DBInfoManager dbManager = DBInfoManager.getInstance();
+            String url = CommonUtil.getDBConnString(dbManager.getDbType(),
+                    dbManager.getDbIP(), dbManager.getDbName());
 
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url, dbManager
-					.getDbUser(), dbManager.getDbPasswd());
+            String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
 
-			Statement stmt = conn.createStatement();
-			
-			String strSQL = "insert into unionIndexInfo(indexName,indexPath,fieldInfo,subIndexInfo) values(";
-			String strValue = "'" + indexInfo.indexName + "','" + indexInfo.indexPath
-					+ "','" + indexInfo.fieldInfo2String() + "','" + indexInfo.indexInfo2String() + "'";
-					
-			strSQL = strSQL + strValue + ")";
-			stmt.execute(strSQL);
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, dbManager
+                    .getDbUser(), dbManager.getDbPasswd());
 
-			stmt.close();
-			conn.close();
+            Statement stmt = conn.createStatement();
 
-			// ÷ÿ–¬º”‘ÿÀ˘”–µƒÀ˜“˝–≈œ¢
-			AllIndexsInfo.getInstance().loadUnionIndexInfoFromDB();
+            String strSQL = "insert into unionIndexInfo(indexName,indexPath,fieldInfo,subIndexInfo) values(";
+            String strValue = "'" + indexInfo.indexName + "','" + indexInfo.indexPath
+                    + "','" + indexInfo.fieldInfo2String() + "','" + indexInfo.indexInfo2String() + "'";
 
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
+            strSQL = strSQL + strValue + ")";
+            stmt.execute(strSQL);
 
-	public static boolean getIndexInfoFromDB(Vector vIndexInfo)
-			throws Exception {
+            stmt.close();
+            conn.close();
 
-		DBInfoManager dbManager = DBInfoManager.getInstance();
-		String url = CommonUtil.getDBConnString(dbManager.getDbType(),
-				dbManager.getDbIP(), dbManager.getDbName());
+            // ÈáçÊñ∞Âä†ËΩΩÊâÄÊúâÁöÑÁ¥¢Âºï‰ø°ÊÅØ
+            AllIndexsInfo.getInstance().loadUnionIndexInfoFromDB();
 
-		String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-		Class.forName(driver).newInstance();
-		Connection conn = DriverManager.getConnection(url, dbManager
-				.getDbUser(), dbManager.getDbPasswd());
+    public static boolean getIndexInfoFromDB(Vector vIndexInfo)
+            throws Exception {
 
-		Statement stmt = conn.createStatement();
+        DBInfoManager dbManager = DBInfoManager.getInstance();
+        String url = CommonUtil.getDBConnString(dbManager.getDbType(),
+                dbManager.getDbIP(), dbManager.getDbName());
 
-		ResultSet rs = stmt.executeQuery("select * from indexInfo where tag=2010");
+        String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
 
-		while (rs.next()) {
-			IndexInfo indexInfo = new IndexInfo();
-			indexInfo.indexID = Integer.parseInt(rs.getString("id"));
-			indexInfo.indexName = rs.getString("indexName");
-			indexInfo.dbType = rs.getString("dbType");
-			indexInfo.dbIP = rs.getString("dbIP");
-			indexInfo.dbName = rs.getString("dbName");
-			indexInfo.passwd = rs.getString("passwd");
-			indexInfo.userName = rs.getString("userName");
+        Class.forName(driver).newInstance();
+        Connection conn = DriverManager.getConnection(url, dbManager
+                .getDbUser(), dbManager.getDbPasswd());
 
-			indexInfo.tableName = rs.getString("tableName");
-			indexInfo.indexPath = rs.getString("indexPath");
-			indexInfo.setFieldInfo(rs.getString("fieldInfo"));
-			indexInfo.indexStatus = Integer.parseInt(rs
-					.getString("indexStatus"));
+        Statement stmt = conn.createStatement();
 
-			vIndexInfo.add(indexInfo);
+        ResultSet rs = stmt.executeQuery("select * from indexInfo where tag=2010");
+
+        while (rs.next()) {
+            IndexInfo indexInfo = new IndexInfo();
+            indexInfo.indexID = Integer.parseInt(rs.getString("id"));
+            indexInfo.indexName = rs.getString("indexName");
+            indexInfo.dbType = rs.getString("dbType");
+            indexInfo.dbIP = rs.getString("dbIP");
+            indexInfo.dbName = rs.getString("dbName");
+            indexInfo.passwd = rs.getString("passwd");
+            indexInfo.userName = rs.getString("userName");
+
+            indexInfo.tableName = rs.getString("tableName");
+            indexInfo.indexPath = rs.getString("indexPath");
+            indexInfo.setFieldInfo(rs.getString("fieldInfo"));
+            indexInfo.indexStatus = Integer.parseInt(rs
+                    .getString("indexStatus"));
+
+            vIndexInfo.add(indexInfo);
             System.out.println(indexInfo + " added");
-		}
-
-		stmt.close();
-		rs.close();
-		conn.close();
-
-		return true;
-	}
-
-	public static boolean getUnionIndexInfoFromDB(Vector vIndexInfo)
-			throws Exception {
-		
-		DBInfoManager dbManager = DBInfoManager.getInstance();
-		String url = CommonUtil.getDBConnString(dbManager.getDbType(),
-				dbManager.getDbIP(), dbManager.getDbName());
-
-		String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
-
-		Class.forName(driver).newInstance();
-		Connection conn = DriverManager.getConnection(url, dbManager
-				.getDbUser(), dbManager.getDbPasswd());
-
-		Statement stmt = conn.createStatement();
-
-		ResultSet rs = stmt.executeQuery("select * from unionIndexInfo");
-
-		while (rs.next()) {
-			UnionIndexInfo indexInfo = new UnionIndexInfo();
-			indexInfo.indexID = Integer.parseInt(rs.getString("id"));
-			indexInfo.indexName = rs.getString("indexName");
-			indexInfo.indexPath = rs.getString("indexPath");
-			indexInfo.setFieldInfo(rs.getString("fieldInfo"));
-			indexInfo.setSubIndexInfo(rs.getString("subIndexInfo"));
-			indexInfo.indexStatus = Integer.parseInt(rs.getString("indexStatus"));
-			vIndexInfo.add(indexInfo);
-		}
-
-		stmt.close();
-		rs.close();
-		conn.close();
-		
-		return true;
-	}
-
-	public static boolean deleteIndexInfoFromDB(int nIndexID,int type) throws Exception {
-
-		try {
-			DBInfoManager dbManager = DBInfoManager.getInstance();
-			String url = CommonUtil.getDBConnString(dbManager.getDbType(),
-					dbManager.getDbIP(), dbManager.getDbName());
-
-			String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
-
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url, dbManager
-					.getDbUser(), dbManager.getDbPasswd());
-
-			Statement stmt = conn.createStatement();
-
-			String strSQL = null;
-			
-			if(type == 0)
-				strSQL = "delete from indexInfo where id = " + nIndexID;
-			else if(type == 1)
-				strSQL = "delete from unionIndexInfo where id = " + nIndexID;
-
-			stmt.execute(strSQL);
-			stmt.close();
-			conn.close();
-
-			// ÷ÿ–¬º”‘ÿÀ˘”–µƒÀ˜“˝–≈œ¢
-			if(type == 0)
-				AllIndexsInfo.getInstance().loadIndexInfoFromDB();
-			else if(type == 1)
-				AllIndexsInfo.getInstance().loadUnionIndexInfoFromDB();
-
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
-	public static void reBuildSingleIndex(int nIndexID) throws Exception {
-		IndexInfo indexInfo = AllIndexsInfo.getInstance().getIndexInfoFromDB(
-				nIndexID);
-
-		if (indexInfo == null)
-			return;
-		synchronized (indexInfo){
-			IndexWriter indexWriter = new IndexWriter(indexInfo.indexPath,
-					new StandardAnalyzer(), true);
-
-			String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
-					indexInfo.dbName);
-
-			String driver = getDbDriverStr(indexInfo.dbType);
-
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url, indexInfo.userName,
-					indexInfo.passwd);
-
-			Statement stmt = conn.createStatement();
-
-			String strSQL = "select count(*) from " + indexInfo.tableName;
-			ResultSet rs = stmt.executeQuery(strSQL); // ÷¥––SQL”Ôæ‰≤¢»°µ√Ω·π˚ºØ
-
-			int nRowCount = 0;
-			if (rs.next())
-				nRowCount = rs.getInt(1); // ªÒ»°◊‹µƒ ˝æ›º«¬º–– ˝
-			rs.close(); // πÿ±’Ω·π˚ºØ
-
-			int nPageSize = 50000;
-			//int nPageSize = 5000;
-			int nPageCount = (nRowCount + nPageSize - 1) / nPageSize;
-
-			for (int j = 0; j < nPageCount; j++) {
-
-				int nBeginPos = j * nPageSize + 1;
-
-				strSQL = "select * from " + indexInfo.tableName + " limit " + nBeginPos + "," + nPageSize;
-				rs = stmt.executeQuery(strSQL);
-
-				while (rs.next()) {
-					Document doc1 = new Document();
-
-					int selFieldNum = indexInfo.vFieldInfo.size();
-
-					for (int i = 0; i < selFieldNum; i++) {
-						FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo
-								.elementAt(i);
-						String fieldValue = rs.getString(fieldInfo.fieldName);
-
-						switch (fieldInfo.indexType) {
-						case 0: // Œ®“ª±Í ∂
-							doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-									Field.Store.YES, Field.Index.UN_TOKENIZED));
-							break;
-						case 1: // Ω¯––À˜“˝,«“±£¥Ê
-							doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-									Field.Store.YES, Field.Index.TOKENIZED));
-							break;
-						case 2: // ≤ªΩ¯––À˜“˝,±£¥Ê
-							doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-									Field.Store.YES, Field.Index.UN_TOKENIZED));
-							break;
-						case 3: // Ω¯––À˜“˝,µ´≤ª±£¥Ê
-							doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-									Field.Store.NO, Field.Index.TOKENIZED));
-							break;
-						}
-					}
-
-					indexWriter.addDocument(doc1);
-				}
-
-				rs.close();
-			}
-			indexWriter.close();
-
-			stmt.close();
-			conn.close();
-
-			// ∏¸–¬À˜“˝◊¥Ã¨
-			DBInfoManager dbManager = DBInfoManager.getInstance();
-			url = CommonUtil.getDBConnString(dbManager.getDbType(), dbManager
-					.getDbIP(), dbManager.getDbName());
-
-			driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
-
-			conn = DriverManager.getConnection(url, dbManager.getDbUser(),
-					dbManager.getDbPasswd());
-
-			stmt = conn.createStatement();
-
-			strSQL = "update indexInfo set indexStatus = 1 where id = " + nIndexID;
-
-			stmt.execute(strSQL);
-
-			conn.close();
-		}		
-	}
-	
-	//÷ÿΩ®’˚ÃÂÀ˜“˝
-	public static void reUnionBuildIndex(int nIndexID) throws Exception {
-		
-		UnionIndexInfo unionIndexInfo = AllIndexsInfo.getInstance().getUnionIndexInfoFromDB(nIndexID);
-		if(unionIndexInfo == null)
-			return;
-		
-		synchronized (unionIndexInfo){
-			IndexWriter indexWriter = new IndexWriter(unionIndexInfo.indexPath,
-					new StandardAnalyzer(), true);
-
-			for(int i=0; i<unionIndexInfo.vSubIndexInfo.size(); i++){
-				IndexInfo indexInfo = (IndexInfo)unionIndexInfo.vSubIndexInfo.get(i);
-				
-				addUnionIndex(indexWriter,indexInfo,unionIndexInfo.vFieldInfo);
-			}
-			indexWriter.close();
-			
-			// ∏¸–¬À˜“˝◊¥Ã¨
-			DBInfoManager dbManager = DBInfoManager.getInstance();
-			String url = CommonUtil.getDBConnString(dbManager.getDbType(), dbManager
-					.getDbIP(), dbManager.getDbName());
-
-			String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url, dbManager.getDbUser(),
-					dbManager.getDbPasswd());
-
-			Statement stmt = conn.createStatement();
-			String strSQL = "update unionIndexInfo set indexStatus = 1 where id = " + nIndexID;
-			stmt.execute(strSQL);
-			conn.close();
-		}	
-	}
-	
-	//	÷ÿΩ®’˚ÃÂÀ˜“˝
-	private static void addUnionIndex(IndexWriter indexWriter,IndexInfo indexInfo,Vector vFieldInfo) throws Exception {
-
-		String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
-				indexInfo.dbName);
-
-		String driver = getDbDriverStr(indexInfo.dbType);
-
-		Class.forName(driver).newInstance();
-		Connection conn = DriverManager.getConnection(url, indexInfo.userName,
-				indexInfo.passwd);
-
-		Statement stmt = conn.createStatement();
-		
-		String strSQL = "select count(*) from " + indexInfo.tableName;
-		ResultSet rs = stmt.executeQuery(strSQL); // ÷¥––SQL”Ôæ‰≤¢»°µ√Ω·π˚ºØ
-
-		int nRowCount = 0;
-		if (rs.next())
-			nRowCount = rs.getInt(1); // ªÒ»°◊‹µƒ ˝æ›º«¬º–– ˝
-		rs.close(); // πÿ±’Ω·π˚ºØ
-
-		int nPageSize = 5000;
-		int nPageCount =  (nRowCount + nPageSize - 1) / nPageSize;
-
-		for (int j = 0; j < nPageCount; j++) {
-
-			int nBeginPos = j * nPageSize + 1;
-
-			strSQL = "select * from " + indexInfo.tableName + " limit " + nBeginPos + "," + nPageSize;
-			rs = stmt.executeQuery(strSQL);
-
-			while (rs.next()) {
-				Document doc1 = new Document();
-
-				//‘ˆº”À˜“˝µƒœ‡πÿ–≈œ¢
-				doc1.add(new Field("indexName", indexInfo.indexName,Field.Store.YES, Field.Index.UN_TOKENIZED));
-				
-				int selFieldNum = vFieldInfo.size();
-				for (int i = 0; i < selFieldNum; i++) {
-					UnionFieldInfo unionFieldInfo = (UnionFieldInfo) vFieldInfo.elementAt(i);
-					FieldInfo fieldInfo = unionFieldInfo.getIndexFieldInfo(indexInfo.indexName);
-					
-					if(fieldInfo == null)
-						continue;
-					
-					String fieldValue = rs.getString(fieldInfo.fieldName);
-
-					switch (fieldInfo.indexType) {
-					case 0: // Œ®“ª±Í ∂
-						doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.UN_TOKENIZED));
-						break;
-					case 1: // Ω¯––À˜“˝,«“±£¥Ê
-						doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.TOKENIZED));
-						break;
-					case 2: // ≤ªΩ¯––À˜“˝,±£¥Ê
-						doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.UN_TOKENIZED));
-						break;
-					case 3: // Ω¯––À˜“˝,µ´≤ª±£¥Ê
-						doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
-								Field.Store.NO, Field.Index.TOKENIZED));
-						break;
-					}
-				}
-
-				indexWriter.addDocument(doc1);
-			}
-
-			rs.close();
-		}
-	//	indexWriter.close();
-
-		stmt.close();
-		conn.close();		
-	}
-
-	public static void reBuildIndex(int nIndexID,int type) throws Exception {
-		if(type == 0)
-			reBuildSingleIndex(nIndexID);
-		else if(type == 1)
-			reUnionBuildIndex(nIndexID);		
-	}
-
-	public static void addIndex(IndexInfo indexInfo, String keyValue)
-			throws Exception {
-
-		synchronized (indexInfo){
-//			  ◊œ»ªÒµ√Œ®“ª±Í ∂◊÷∂Œ
-			String keyFieldName = null;
-
-			for (int i = 0; i < indexInfo.vFieldInfo.size(); i++) {
-				FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo.get(i);
-				if (fieldInfo.indexType == 0) {
-					keyFieldName = fieldInfo.fieldName;
-					break;
-				}
-			}
-
-			if (keyFieldName == null)
-				return;
-
-			IndexWriter indexWriter = new IndexWriter(indexInfo.indexPath,
-					new StandardAnalyzer(), false);
-
-			String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
-					indexInfo.dbName);
-
-			String driver = getDbDriverStr(indexInfo.dbType);
-
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url, indexInfo.userName,
-					indexInfo.passwd);
-
-			Statement stmt = conn.createStatement();
-
-			String strSQL = "select * from " + indexInfo.tableName + " where "
-					+ keyFieldName + "='" + keyValue + "'";
-			ResultSet rs = stmt.executeQuery(strSQL);
-
-			if (rs.next()) {
-				Document doc1 = new Document();
-
-				int selFieldNum = indexInfo.vFieldInfo.size();
-
-				for (int i = 0; i < selFieldNum; i++) {
-					FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo
-							.elementAt(i);
-					String fieldValue = rs.getString(fieldInfo.fieldName);
-
-					switch (fieldInfo.indexType) {
-					case 0: // Œ®“ª±Í ∂
-						doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.UN_TOKENIZED));
-						break;
-					case 1: // Ω¯––À˜“˝,«“±£¥Ê
-						doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.TOKENIZED));
-						break;
-					case 2: // ≤ªΩ¯––À˜“˝,±£¥Ê
-						doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-								Field.Store.YES, Field.Index.UN_TOKENIZED));
-						break;
-					case 3: // Ω¯––À˜“˝,µ´≤ª±£¥Ê
-						doc1.add(new Field(fieldInfo.fieldName, fieldValue,
-								Field.Store.NO, Field.Index.TOKENIZED));
-						break;
-					}
-				}
-
-				indexWriter.addDocument(doc1);
-			}
-
-			rs.close();
-
-			indexWriter.close();
-
-			stmt.close();
-			conn.close();	
-		}		
-	}
-
-	public static void deleteIndex(IndexInfo indexInfo, String keyValue)
-			throws IOException {
-
-		synchronized (indexInfo){
-			//  ◊œ»ªÒµ√Œ®“ª±Í ∂◊÷∂Œ
-			String keyFieldName = null;
-
-			for (int i = 0; i < indexInfo.vFieldInfo.size(); i++) {
-				FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo.get(i);
-				if (fieldInfo.indexType == 0) {
-					keyFieldName = fieldInfo.fieldName;
-					break;
-				}
-			}
-
-			if (keyFieldName == null)
-				return;
-
-			Directory directory = FSDirectory.getDirectory(indexInfo.indexPath,
-					false);
-			IndexReader reader = IndexReader.open(directory);
-
-			Term term = new Term(keyFieldName, keyValue);
-			reader.deleteDocuments(term);
-			reader.close();
-			directory.close();
-		}
-		
-	}
-
-	public static void updateIndex(IndexInfo indexInfo, String keyValue)
-			throws Exception {
-
-		deleteIndex(indexInfo, keyValue);
-
-		addIndex(indexInfo, keyValue);
-	}
-	
-	public static String markAllKeywordRed(String strSrc, Vector vKey) {
-		for(int i=0; i<vKey.size(); i++){
-			String strSrc2 = markRed(strSrc,(String)vKey.get(i));
-			strSrc = strSrc2;
-		}
-		
-		return strSrc;
-	}
-
-	public static String markRed(String strSrc, String strKey) {
-		if(strSrc == null || strKey == null)
-			return null;
-		
-		// œ»¿˚”√ø’∏ÒΩ´πÿº¸◊÷∑÷∏Ó
-		Vector vKeys = new Vector();
-
-		strKey = strKey + " ";
-		int nPos = strKey.indexOf(' ');
-		while (nPos != -1) {
-			String str = strKey.substring(0, nPos);
-			if (!strKey.equals(""))
-				vKeys.add(str);
-			strKey = strKey.substring(nPos + 1);
-			nPos = strKey.indexOf(' ');
-		}
-
-		for (int i = 0; i < vKeys.size(); i++) {
-			String str = (String) vKeys.get(i);
-			String dest = "<font color=#FF0000>" +  str + "</font>";
-			strSrc = strSrc.replaceAll(str, dest);
-		}
-
-		return strSrc;
-	}
+        }
+
+        stmt.close();
+        rs.close();
+        conn.close();
+
+        return true;
+    }
+
+    public static boolean getUnionIndexInfoFromDB(Vector vIndexInfo)
+            throws Exception {
+
+        DBInfoManager dbManager = DBInfoManager.getInstance();
+        String url = CommonUtil.getDBConnString(dbManager.getDbType(),
+                dbManager.getDbIP(), dbManager.getDbName());
+
+        String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+
+        Class.forName(driver).newInstance();
+        Connection conn = DriverManager.getConnection(url, dbManager
+                .getDbUser(), dbManager.getDbPasswd());
+
+        Statement stmt = conn.createStatement();
+
+        ResultSet rs = stmt.executeQuery("select * from unionIndexInfo");
+
+        while (rs.next()) {
+            UnionIndexInfo indexInfo = new UnionIndexInfo();
+            indexInfo.indexID = Integer.parseInt(rs.getString("id"));
+            indexInfo.indexName = rs.getString("indexName");
+            indexInfo.indexPath = rs.getString("indexPath");
+            indexInfo.setFieldInfo(rs.getString("fieldInfo"));
+            indexInfo.setSubIndexInfo(rs.getString("subIndexInfo"));
+            indexInfo.indexStatus = Integer.parseInt(rs.getString("indexStatus"));
+            vIndexInfo.add(indexInfo);
+        }
+
+        stmt.close();
+        rs.close();
+        conn.close();
+
+        return true;
+    }
+
+    public static boolean deleteIndexInfoFromDB(int nIndexID,int type) throws Exception {
+
+        try {
+            DBInfoManager dbManager = DBInfoManager.getInstance();
+            String url = CommonUtil.getDBConnString(dbManager.getDbType(),
+                    dbManager.getDbIP(), dbManager.getDbName());
+
+            String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, dbManager
+                    .getDbUser(), dbManager.getDbPasswd());
+
+            Statement stmt = conn.createStatement();
+
+            String strSQL = null;
+
+            if(type == 0)
+                strSQL = "delete from indexInfo where id = " + nIndexID;
+            else if(type == 1)
+                strSQL = "delete from unionIndexInfo where id = " + nIndexID;
+
+            stmt.execute(strSQL);
+            stmt.close();
+            conn.close();
+
+            // ÈáçÊñ∞Âä†ËΩΩÊâÄÊúâÁöÑÁ¥¢Âºï‰ø°ÊÅØ
+            if(type == 0)
+                AllIndexsInfo.getInstance().loadIndexInfoFromDB();
+            else if(type == 1)
+                AllIndexsInfo.getInstance().loadUnionIndexInfoFromDB();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void reBuildSingleIndex(int nIndexID) throws Exception {
+        IndexInfo indexInfo = AllIndexsInfo.getInstance().getIndexInfoFromDB(
+                nIndexID);
+
+        if (indexInfo == null)
+            return;
+        synchronized (indexInfo){
+            IndexWriter indexWriter = new IndexWriter(indexInfo.indexPath,
+                    new StandardAnalyzer(), true);
+
+            String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
+                    indexInfo.dbName);
+
+            String driver = getDbDriverStr(indexInfo.dbType);
+
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, indexInfo.userName,
+                    indexInfo.passwd);
+
+            Statement stmt = conn.createStatement();
+
+            String strSQL = "select count(*) from " + indexInfo.tableName;
+            ResultSet rs = stmt.executeQuery(strSQL); // ÊâßË°åSQLËØ≠Âè•Âπ∂ÂèñÂæóÁªìÊûúÈõÜ
+
+            int nRowCount = 0;
+            if (rs.next())
+                nRowCount = rs.getInt(1); // Ëé∑ÂèñÊÄªÁöÑÊï∞ÊçÆËÆ∞ÂΩïË°åÊï∞
+            rs.close(); // ÂÖ≥Èó≠ÁªìÊûúÈõÜ
+
+            int nPageSize = 50000;
+            //int nPageSize = 5000;
+            int nPageCount = (nRowCount + nPageSize - 1) / nPageSize;
+
+            for (int j = 0; j < nPageCount; j++) {
+
+                int nBeginPos = j * nPageSize + 1;
+
+                strSQL = "select * from " + indexInfo.tableName + " limit " + nBeginPos + "," + nPageSize;
+                rs = stmt.executeQuery(strSQL);
+
+                while (rs.next()) {
+                    Document doc1 = new Document();
+
+                    int selFieldNum = indexInfo.vFieldInfo.size();
+
+                    for (int i = 0; i < selFieldNum; i++) {
+                        FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo
+                                .elementAt(i);
+                        String fieldValue = rs.getString(fieldInfo.fieldName);
+
+                        switch (fieldInfo.indexType) {
+                            case 0: // ÂîØ‰∏ÄÊ†áËØÜ
+                                doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                        Field.Store.YES, Field.Index.UN_TOKENIZED));
+                                break;
+                            case 1: // ËøõË°åÁ¥¢Âºï,‰∏î‰øùÂ≠ò
+                                doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                        Field.Store.YES, Field.Index.TOKENIZED));
+                                break;
+                            case 2: // ‰∏çËøõË°åÁ¥¢Âºï,‰øùÂ≠ò
+                                doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                        Field.Store.YES, Field.Index.UN_TOKENIZED));
+                                break;
+                            case 3: // ËøõË°åÁ¥¢Âºï,‰ΩÜ‰∏ç‰øùÂ≠ò
+                                doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                        Field.Store.NO, Field.Index.TOKENIZED));
+                                break;
+                        }
+                    }
+
+                    indexWriter.addDocument(doc1);
+                }
+
+                rs.close();
+            }
+            indexWriter.close();
+
+            stmt.close();
+            conn.close();
+
+            // Êõ¥Êñ∞Á¥¢ÂºïÁä∂ÊÄÅ
+            DBInfoManager dbManager = DBInfoManager.getInstance();
+            url = CommonUtil.getDBConnString(dbManager.getDbType(), dbManager
+                    .getDbIP(), dbManager.getDbName());
+
+            driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+
+            conn = DriverManager.getConnection(url, dbManager.getDbUser(),
+                    dbManager.getDbPasswd());
+
+            stmt = conn.createStatement();
+
+            strSQL = "update indexInfo set indexStatus = 1 where id = " + nIndexID;
+
+            stmt.execute(strSQL);
+
+            conn.close();
+        }
+    }
+
+    //ÈáçÂª∫Êï¥‰ΩìÁ¥¢Âºï
+    public static void reUnionBuildIndex(int nIndexID) throws Exception {
+
+        UnionIndexInfo unionIndexInfo = AllIndexsInfo.getInstance().getUnionIndexInfoFromDB(nIndexID);
+        if(unionIndexInfo == null)
+            return;
+
+        synchronized (unionIndexInfo){
+            IndexWriter indexWriter = new IndexWriter(unionIndexInfo.indexPath,
+                    new StandardAnalyzer(), true);
+
+            for(int i=0; i<unionIndexInfo.vSubIndexInfo.size(); i++){
+                IndexInfo indexInfo = (IndexInfo)unionIndexInfo.vSubIndexInfo.get(i);
+
+                addUnionIndex(indexWriter,indexInfo,unionIndexInfo.vFieldInfo);
+            }
+            indexWriter.close();
+
+            // Êõ¥Êñ∞Á¥¢ÂºïÁä∂ÊÄÅ
+            DBInfoManager dbManager = DBInfoManager.getInstance();
+            String url = CommonUtil.getDBConnString(dbManager.getDbType(), dbManager
+                    .getDbIP(), dbManager.getDbName());
+
+            String driver = CommonUtil.getDbDriverStr(dbManager.getDbType());
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, dbManager.getDbUser(),
+                    dbManager.getDbPasswd());
+
+            Statement stmt = conn.createStatement();
+            String strSQL = "update unionIndexInfo set indexStatus = 1 where id = " + nIndexID;
+            stmt.execute(strSQL);
+            conn.close();
+        }
+    }
+
+    //	ÈáçÂª∫Êï¥‰ΩìÁ¥¢Âºï
+    private static void addUnionIndex(IndexWriter indexWriter,IndexInfo indexInfo,Vector vFieldInfo) throws Exception {
+
+        String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
+                indexInfo.dbName);
+
+        String driver = getDbDriverStr(indexInfo.dbType);
+
+        Class.forName(driver).newInstance();
+        Connection conn = DriverManager.getConnection(url, indexInfo.userName,
+                indexInfo.passwd);
+
+        Statement stmt = conn.createStatement();
+
+        String strSQL = "select count(*) from " + indexInfo.tableName;
+        ResultSet rs = stmt.executeQuery(strSQL); // ÊâßË°åSQLËØ≠Âè•Âπ∂ÂèñÂæóÁªìÊûúÈõÜ
+
+        int nRowCount = 0;
+        if (rs.next())
+            nRowCount = rs.getInt(1); // Ëé∑ÂèñÊÄªÁöÑÊï∞ÊçÆËÆ∞ÂΩïË°åÊï∞
+        rs.close(); // ÂÖ≥Èó≠ÁªìÊûúÈõÜ
+
+        int nPageSize = 5000;
+        int nPageCount =  (nRowCount + nPageSize - 1) / nPageSize;
+
+        for (int j = 0; j < nPageCount; j++) {
+
+            int nBeginPos = j * nPageSize + 1;
+
+            strSQL = "select * from " + indexInfo.tableName + " limit " + nBeginPos + "," + nPageSize;
+            rs = stmt.executeQuery(strSQL);
+
+            while (rs.next()) {
+                Document doc1 = new Document();
+
+                //Â¢ûÂä†Á¥¢ÂºïÁöÑÁõ∏ÂÖ≥‰ø°ÊÅØ
+                doc1.add(new Field("indexName", indexInfo.indexName,Field.Store.YES, Field.Index.UN_TOKENIZED));
+
+                int selFieldNum = vFieldInfo.size();
+                for (int i = 0; i < selFieldNum; i++) {
+                    UnionFieldInfo unionFieldInfo = (UnionFieldInfo) vFieldInfo.elementAt(i);
+                    FieldInfo fieldInfo = unionFieldInfo.getIndexFieldInfo(indexInfo.indexName);
+
+                    if(fieldInfo == null)
+                        continue;
+
+                    String fieldValue = rs.getString(fieldInfo.fieldName);
+
+                    switch (fieldInfo.indexType) {
+                        case 0: // ÂîØ‰∏ÄÊ†áËØÜ
+                            doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.UN_TOKENIZED));
+                            break;
+                        case 1: // ËøõË°åÁ¥¢Âºï,‰∏î‰øùÂ≠ò
+                            doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.TOKENIZED));
+                            break;
+                        case 2: // ‰∏çËøõË°åÁ¥¢Âºï,‰øùÂ≠ò
+                            doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.UN_TOKENIZED));
+                            break;
+                        case 3: // ËøõË°åÁ¥¢Âºï,‰ΩÜ‰∏ç‰øùÂ≠ò
+                            doc1.add(new Field(unionFieldInfo.fieldName, fieldValue,
+                                    Field.Store.NO, Field.Index.TOKENIZED));
+                            break;
+                    }
+                }
+
+                indexWriter.addDocument(doc1);
+            }
+
+            rs.close();
+        }
+        //	indexWriter.close();
+
+        stmt.close();
+        conn.close();
+    }
+
+    public static void reBuildIndex(int nIndexID,int type) throws Exception {
+        if(type == 0)
+            reBuildSingleIndex(nIndexID);
+        else if(type == 1)
+            reUnionBuildIndex(nIndexID);
+    }
+
+    public static void addIndex(IndexInfo indexInfo, String keyValue)
+            throws Exception {
+
+        synchronized (indexInfo){
+//			 È¶ñÂÖàËé∑ÂæóÂîØ‰∏ÄÊ†áËØÜÂ≠óÊÆµ
+            String keyFieldName = null;
+
+            for (int i = 0; i < indexInfo.vFieldInfo.size(); i++) {
+                FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo.get(i);
+                if (fieldInfo.indexType == 0) {
+                    keyFieldName = fieldInfo.fieldName;
+                    break;
+                }
+            }
+
+            if (keyFieldName == null)
+                return;
+
+            IndexWriter indexWriter = new IndexWriter(indexInfo.indexPath,
+                    new StandardAnalyzer(), false);
+
+            String url = getDBConnString(indexInfo.dbType, indexInfo.dbIP,
+                    indexInfo.dbName);
+
+            String driver = getDbDriverStr(indexInfo.dbType);
+
+            Class.forName(driver).newInstance();
+            Connection conn = DriverManager.getConnection(url, indexInfo.userName,
+                    indexInfo.passwd);
+
+            Statement stmt = conn.createStatement();
+
+            String strSQL = "select * from " + indexInfo.tableName + " where "
+                    + keyFieldName + "='" + keyValue + "'";
+            ResultSet rs = stmt.executeQuery(strSQL);
+
+            if (rs.next()) {
+                Document doc1 = new Document();
+
+                int selFieldNum = indexInfo.vFieldInfo.size();
+
+                for (int i = 0; i < selFieldNum; i++) {
+                    FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo
+                            .elementAt(i);
+                    String fieldValue = rs.getString(fieldInfo.fieldName);
+
+                    switch (fieldInfo.indexType) {
+                        case 0: // ÂîØ‰∏ÄÊ†áËØÜ
+                            doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.UN_TOKENIZED));
+                            break;
+                        case 1: // ËøõË°åÁ¥¢Âºï,‰∏î‰øùÂ≠ò
+                            doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.TOKENIZED));
+                            break;
+                        case 2: // ‰∏çËøõË°åÁ¥¢Âºï,‰øùÂ≠ò
+                            doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                    Field.Store.YES, Field.Index.UN_TOKENIZED));
+                            break;
+                        case 3: // ËøõË°åÁ¥¢Âºï,‰ΩÜ‰∏ç‰øùÂ≠ò
+                            doc1.add(new Field(fieldInfo.fieldName, fieldValue,
+                                    Field.Store.NO, Field.Index.TOKENIZED));
+                            break;
+                    }
+                }
+
+                indexWriter.addDocument(doc1);
+            }
+
+            rs.close();
+
+            indexWriter.close();
+
+            stmt.close();
+            conn.close();
+        }
+    }
+
+    public static void deleteIndex(IndexInfo indexInfo, String keyValue)
+            throws IOException {
+
+        synchronized (indexInfo){
+            // È¶ñÂÖàËé∑ÂæóÂîØ‰∏ÄÊ†áËØÜÂ≠óÊÆµ
+            String keyFieldName = null;
+
+            for (int i = 0; i < indexInfo.vFieldInfo.size(); i++) {
+                FieldInfo fieldInfo = (FieldInfo) indexInfo.vFieldInfo.get(i);
+                if (fieldInfo.indexType == 0) {
+                    keyFieldName = fieldInfo.fieldName;
+                    break;
+                }
+            }
+
+            if (keyFieldName == null)
+                return;
+
+            Directory directory = FSDirectory.getDirectory(indexInfo.indexPath,
+                    false);
+            IndexReader reader = IndexReader.open(directory);
+
+            Term term = new Term(keyFieldName, keyValue);
+            reader.deleteDocuments(term);
+            reader.close();
+            directory.close();
+        }
+
+    }
+
+    public static void updateIndex(IndexInfo indexInfo, String keyValue)
+            throws Exception {
+
+        deleteIndex(indexInfo, keyValue);
+
+        addIndex(indexInfo, keyValue);
+    }
+
+    public static String markAllKeywordRed(String strSrc, Vector vKey) {
+        for(int i=0; i<vKey.size(); i++){
+            String strSrc2 = markRed(strSrc,(String)vKey.get(i));
+            strSrc = strSrc2;
+        }
+
+        return strSrc;
+    }
+
+    public static String markRed(String strSrc, String strKey) {
+        if(strSrc == null || strKey == null)
+            return null;
+
+        // ÂÖàÂà©Áî®Á©∫Ê†ºÂ∞ÜÂÖ≥ÈîÆÂ≠óÂàÜÂâ≤
+        Vector vKeys = new Vector();
+
+        strKey = strKey + " ";
+        int nPos = strKey.indexOf(' ');
+        while (nPos != -1) {
+            String str = strKey.substring(0, nPos);
+            if (!strKey.equals(""))
+                vKeys.add(str);
+            strKey = strKey.substring(nPos + 1);
+            nPos = strKey.indexOf(' ');
+        }
+
+        for (int i = 0; i < vKeys.size(); i++) {
+            String str = (String) vKeys.get(i);
+            String dest = "<font color=#FF0000>" +  str + "</font>";
+            strSrc = strSrc.replaceAll(str, dest);
+        }
+
+        return strSrc;
+    }
 
 //	public static Vector getTableFieldName(AddIndexForm form) throws Exception {
 //
@@ -651,7 +651,7 @@ public final class CommonUtil {
 //
 //		ResultSet rs = pstmt.executeQuery();
 //
-//		ResultSetMetaData rsmd = rs.getMetaData(); // ªÒ»°◊÷∂Œ√˚
+//		ResultSetMetaData rsmd = rs.getMetaData(); // Ëé∑ÂèñÂ≠óÊÆµÂêç
 //
 //		Vector vFieldName = new Vector();
 //		if (rsmd != null) {

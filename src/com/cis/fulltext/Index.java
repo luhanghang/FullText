@@ -380,6 +380,15 @@ public class Index {
 
                     if (fieldValue == null) fieldValue = "N";
 
+                    if(fieldInfo.fieldName.equals("investscale")) {
+                        int len = fieldValue.length();
+                        StringBuffer ts = new StringBuffer();
+                        for(int x = 0; x < 15 - len; x++) {
+                            ts.append("0");
+                        }
+                        fieldValue = ts.toString() + fieldValue;
+                    }
+
                     if (fieldInfo.fieldName.equals("vocation")) {
                         fieldValue = fieldValue.replaceAll(",", " A");
                         fieldValue = "A" + fieldValue;
@@ -404,7 +413,7 @@ public class Index {
                         store = Field.Store.NO;
                         StringBuffer f = new StringBuffer();
                         for (String field : this.unionFields) {
-                            f.append(getRsString(rs, field.trim()));
+                            f.append(getRsString(rs, field.trim())).append(",");
                         }
                         if (this.infType.equals("bidnotice") || this.infType.equals("result")) {
                             String fj = getRsString(rs, "fuj");
@@ -417,10 +426,13 @@ public class Index {
                             }
                         }
                         fieldValue = f.toString().replaceAll(" ", "");
+                        //fieldValue = Utils.numberToHan(fieldValue);
+                        //System.out.println(fieldValue);
                         break;
                 }
                 if (fieldValue.trim().equals("") || fieldValue.trim().equals("-") || fieldValue.trim().equals("*"))
                     fieldValue = "N";
+
                 doc.add(new Field(fieldInfo.fieldName, fieldValue, store, idx));
                 this.addUnionField(docUnion, fieldInfo.fieldName, fieldValue, store, idx);
             }
@@ -441,7 +453,11 @@ public class Index {
             }
 
             if (content_stmt != null) {
-                this.update_content(content_stmt, getRsString(rs, this.keyField), getRsString(rs, this.contentField));
+                try {
+                    this.update_content(content_stmt, getRsString(rs, this.keyField), getRsString(rs, this.contentField));
+                } catch (Exception e) {
+
+                }
             }
 
             indexWriter.addDocument(doc);
@@ -608,7 +624,7 @@ public class Index {
             } else {
                 sort.setSort(f_k);
             }
-        } else {
+        } else if(!sorts.equals("score")) {
             String[] ss = sorts.split(",");
             SortField[] sfs = new SortField[ss.length];
             for (int i = 0; i < ss.length; i++) {
@@ -618,7 +634,11 @@ public class Index {
             sort.setSort(sfs);
         }
 
-        hits = indexSearcher.search(query, sort);
+        if(sorts == null || !sorts.equals("score")) {
+            hits = indexSearcher.search(query, sort);
+        } else {
+            hits = indexSearcher.search(query);
+        }
 
         int hitNum = hits.length();
 
@@ -644,6 +664,7 @@ public class Index {
                     if (value == null) value = "";
                     out.append("&&&").append(field).append("|||").append(value.replaceAll("\n", " ").replaceAll("\r", ""));
                 }
+                out.append("&&&hit_score|||" + hits.score(i));
                 out.append("\n\r");
             }
         }
@@ -983,7 +1004,7 @@ public class Index {
 
     private String getRsString(ResultSet rs, String name) throws Exception {
         String value = rs.getString(name);
-        if (value == null) return null;
+        if (value == null) return "";
         return value.replaceAll("'", "''");
 //        try {
 //            String value = rs.getString(name);
@@ -1012,9 +1033,9 @@ public class Index {
     }
 
     public static void main(String[] args) throws Exception {
-        //Env.homePath = args[0];
-        //AllIndexsInfo.getInstance().loadIndexInfoFromDB();
-        //System.out.println(Env.homePath);
+        Env.homePath = args[0];
+        AllIndexsInfo.getInstance().loadIndexInfoFromDB();
+        System.out.println(Env.homePath);
         if (args.length == 2) {
             Index idx = new Index(args[1]);
             idx.bulk_create();

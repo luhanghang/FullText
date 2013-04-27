@@ -342,13 +342,8 @@ public class Attachment {
     }
 
 
-    public void main(String[] args) throws Exception {
-        String filename = args[0];
-        System.out.println(args[0]);
-        if (!filename.startsWith("/uploadfile")) {
-            filename = "/uploadfile" + filename;
-        }
-        System.out.println(filename);
-        //getContent(filename);
+    public static void main(String[] args) throws Exception {
+        Attachment attachment = new Attachment("","","");
+        System.out.println(attachment.readWord(new File("/Users/luhang/Desktop/1.doc")));
     }
 }
