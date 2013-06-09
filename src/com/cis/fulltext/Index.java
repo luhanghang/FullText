@@ -405,6 +405,7 @@ public class Index {
                         idx = Field.Index.UN_TOKENIZED;
                         break;
                     case Index.INDEX_N_STORE:
+                        fieldValue = fieldValue.replaceAll(",", " ");
                         break;
                     case Index.ONLY_STORE:
                         idx = Field.Index.UN_TOKENIZED;
